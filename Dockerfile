@@ -4,7 +4,7 @@ FROM postgres:$POSTGRES_VERSION
 
 ENV POSTGRES_PASSWORD postgres
 
-RUN apt-get update && apt-get install -y postgresql-server-dev-${PG_MAJOR} make gcc g++ git
+RUN apt-get update && apt-get install -y postgresql-server-dev-all make gcc g++ git
 
 WORKDIR /src
 RUN git clone https://github.com/citusdata/postgresql-hll.git
