@@ -77,3 +77,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: hbontempo/posgres-hll:${{ matrix.version }}
+          cache-from: type=registry,ref=hbontempo/posgres-hll:${{ matrix.version }}
+          cache-to: type=inline
