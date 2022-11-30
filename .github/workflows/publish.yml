@@ -36,6 +36,6 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: POSTGRES_VERSION=${{ matrix.version }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: hbontempo/posgres-hll:${{ matrix.version }}
