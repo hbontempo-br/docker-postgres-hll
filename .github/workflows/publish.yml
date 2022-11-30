@@ -10,6 +10,7 @@ jobs:
     concurrency:
       group: release-${{ matrix.version }}
       cancel-in-progress: true
+    timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
