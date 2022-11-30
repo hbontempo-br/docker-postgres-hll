@@ -11,6 +11,8 @@ jobs:
       group: release
       cancel-in-progress: true
     strategy:
+      max-parallel: 4
+      fail-fast: false
       matrix:
         version: 
           - 'latest'
