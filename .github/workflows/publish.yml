@@ -8,7 +8,7 @@ on:
 jobs:
   publish:
     concurrency:
-      group: release
+      group: release-${{ matrix.version }}
       cancel-in-progress: true
     strategy:
       max-parallel: 4
