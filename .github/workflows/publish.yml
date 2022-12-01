@@ -29,14 +29,23 @@ jobs:
 
   publish:
     concurrency:
-      group: publish-${{ matrix.version }}
+      group: ${{ matrix.postgres }}-v${{ matrix.hll }}
       cancel-in-progress: true
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
-        version: 
+        hll:
+          - 2.17
+          - 2.16
+          - 2.15.1
+          # - 2.15
+          # - 2.14
+          # - 2.13
+          # - 2.12
+          # - 2.11
+        postgres: 
           - "latest"
           - "15.1"
           - "15.0"
@@ -95,9 +104,11 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          build-args: POSTGRES_VERSION=${{ matrix.version }}
+          build-args: |
+            POSTGRES_VERSION=${{ matrix.postgres }}
+            HLL_VERSION=${{ matrix.hll }}
           platforms: linux/amd64
           push: true
-          tags: hbontempo/postgres-hll:${{ matrix.version }}
-          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.version }}
+          tags: hbontempo/postgres-hll:${{ matrix.postgres }}-v${{ matrix.hll }}
+          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.postgres }}
           cache-to: type=inline
