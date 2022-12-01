@@ -21,7 +21,7 @@ jobs:
         with:
           username: hbontempo
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: hbontempo/posgres-hll
+          repository: hbontempo/postgres-hll
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
   publish:
@@ -95,6 +95,6 @@ jobs:
           build-args: POSTGRES_VERSION=${{ matrix.version }}
           platforms: linux/amd64
           push: true
-          tags: hbontempo/posgres-hll:${{ matrix.version }}
-          cache-from: type=registry,ref=hbontempo/posgres-hll:${{ matrix.version }}
+          tags: hbontempo/postgres-hll:${{ matrix.version }}
+          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.version }}
           cache-to: type=inline
