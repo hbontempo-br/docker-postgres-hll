@@ -29,61 +29,168 @@ jobs:
 
   publish:
     concurrency:
-      group: ${{ matrix.postgres }}-v${{ matrix.hll }}
+      group: ${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
       cancel-in-progress: true
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
-        hll:
-          - 2.17
-          - 2.16
-          - 2.15.1
-          # - 2.15
-          # - 2.14
-          # - 2.13
-          # - 2.12
-          # - 2.11
-        postgres: 
-          - "latest"
-          - "15.1"
-          - "15.0"
-          - "15"
-          - "14.6"
-          - "14.5"
-          - "14.4"
-          - "14.3"
-          - "14.2"
-          - "14.1"
-          - "14.0"
-          - "14"
-          - "13.9"
-          - "13.8"
-          - "13.7"
-          - "13.6"
-          - "13.5"
-          - "13.4"
-          - "13.3"
-          - "13.2"
-          - "13.1"
-          - "13.0"
-          - "13"
-          - "12.13"
-          - "12.12"
-          - "12.11"
-          - "12.10"
-          - "12.9"
-          - "12.8"
-          - "12.7"
-          - "12.6"
-          - "12.5"
-          - "12.4"
-          - "12.3"
-          - "12.2"
-          - "12.1"
-          - "12.0"
-          - "12"
+        version: [
+          {postgres: latest, hll: 2.17},
+          # {postgres: latest, hll: 2.16},
+          # {postgres: latest, hll: 2.15.1},
+          
+          {postgres: 15.1, hll: 2.17},
+          # {postgres: 15.1, hll: 2.16},
+          # {postgres: 15.1, hll: 2.15.1},
+          
+          {postgres: 15.0, hll: 2.17},
+          # {postgres: 15.0, hll: 2.16},
+          # {postgres: 15.0, hll: 2.15.1},
+          
+          {postgres: 15, hll: 2.17},
+          # {postgres: 15, hll: 2.16},
+          # {postgres: 15, hll: 2.15.1},
+          
+          {postgres: 14.6, hll: 2.17},
+          {postgres: 14.6, hll: 2.16},
+          # {postgres: 14.6, hll: 2.15.1},
+          
+          {postgres: 14.5, hll: 2.17},
+          {postgres: 14.5, hll: 2.16},
+          # {postgres: 14.5, hll: 2.15.1},
+          
+          {postgres: 14.4, hll: 2.17},
+          {postgres: 14.4, hll: 2.16},
+          # {postgres: 14.4, hll: 2.15.1},
+          
+          {postgres: 14.3, hll: 2.17},
+          {postgres: 14.3, hll: 2.16},
+          # {postgres: 14.3, hll: 2.15.1},
+          
+          {postgres: 14.2, hll: 2.17},
+          {postgres: 14.2, hll: 2.16},
+          # {postgres: 14.2, hll: 2.15.1},
+          
+          {postgres: 14.1, hll: 2.17},
+          {postgres: 14.1, hll: 2.16},
+          # {postgres: 14.1, hll: 2.15.1},
+          
+          {postgres: 14.0, hll: 2.17},
+          {postgres: 14.0, hll: 2.16},
+          # {postgres: 14.0, hll: 2.15.1},
+          
+          {postgres: 14, hll: 2.17},
+          {postgres: 14, hll: 2.16},
+          # {postgres: 14, hll: 2.15.1},
+          
+          {postgres: 13.9, hll: 2.17},
+          {postgres: 13.9, hll: 2.16},
+          {postgres: 13.9, hll: 2.15.1},
+          
+          {postgres: 13.8, hll: 2.17},
+          {postgres: 13.8, hll: 2.16},
+          {postgres: 13.8, hll: 2.15.1},
+          
+          {postgres: 13.7, hll: 2.17},
+          {postgres: 13.7, hll: 2.16},
+          {postgres: 13.7, hll: 2.15.1},
+          
+          {postgres: 13.6, hll: 2.17},
+          {postgres: 13.6, hll: 2.16},
+          {postgres: 13.6, hll: 2.15.1},
+          
+          {postgres: 13.5, hll: 2.17},
+          {postgres: 13.5, hll: 2.16},
+          {postgres: 13.5, hll: 2.15.1},
+          
+          {postgres: 13.4, hll: 2.17},
+          {postgres: 13.4, hll: 2.16},
+          {postgres: 13.4, hll: 2.15.1},
+          
+          {postgres: 13.3, hll: 2.17},
+          {postgres: 13.3, hll: 2.16},
+          {postgres: 13.3, hll: 2.15.1},
+          
+          {postgres: 13.2, hll: 2.17},
+          {postgres: 13.2, hll: 2.16},
+          {postgres: 13.2, hll: 2.15.1},
+          
+          {postgres: 13.1, hll: 2.17},
+          {postgres: 13.1, hll: 2.16},
+          {postgres: 13.1, hll: 2.15.1},
+          
+          {postgres: 13.0, hll: 2.17},
+          {postgres: 13.0, hll: 2.16},
+          {postgres: 13.0, hll: 2.15.1},
+          
+          {postgres: 13, hll: 2.17},
+          {postgres: 13, hll: 2.16},
+          {postgres: 13, hll: 2.15.1},
+          
+          {postgres: 12.13, hll: 2.17},
+          {postgres: 12.13, hll: 2.16},
+          {postgres: 12.13, hll: 2.15.1},
+          
+          {postgres: 12.12, hll: 2.17},
+          {postgres: 12.12, hll: 2.16},
+          {postgres: 12.12, hll: 2.15.1},
+          
+          {postgres: 12.11, hll: 2.17},
+          {postgres: 12.11, hll: 2.16},
+          {postgres: 12.11, hll: 2.15.1},
+          
+          {postgres: 12.10, hll: 2.17},
+          {postgres: 12.10, hll: 2.16},
+          {postgres: 12.10, hll: 2.15.1},
+          
+          {postgres: 12.9, hll: 2.17},
+          {postgres: 12.9, hll: 2.16},
+          {postgres: 12.9, hll: 2.15.1},
+          
+          {postgres: 12.8, hll: 2.17},
+          {postgres: 12.8, hll: 2.16},
+          {postgres: 12.8, hll: 2.15.1},
+          
+          {postgres: 12.7, hll: 2.17},
+          {postgres: 12.7, hll: 2.16},
+          {postgres: 12.7, hll: 2.15.1},
+          
+          {postgres: 12.6, hll: 2.17},
+          {postgres: 12.6, hll: 2.16},
+          {postgres: 12.6, hll: 2.15.1},
+          
+          {postgres: 12.5, hll: 2.17},
+          {postgres: 12.5, hll: 2.16},
+          {postgres: 12.5, hll: 2.15.1},
+          
+          {postgres: 12.4, hll: 2.17},
+          {postgres: 12.4, hll: 2.16},
+          {postgres: 12.4, hll: 2.15.1},
+          
+          {postgres: 12.3, hll: 2.17},
+          {postgres: 12.3, hll: 2.16},
+          {postgres: 12.3, hll: 2.15.1},
+          
+          {postgres: 12.2, hll: 2.17},
+          {postgres: 12.2, hll: 2.16},
+          {postgres: 12.2, hll: 2.15.1},
+          
+          {postgres: 12.1, hll: 2.17},
+          {postgres: 12.1, hll: 2.16},
+          {postgres: 12.1, hll: 2.15.1},
+          
+          {postgres: 12.0, hll: 2.17},
+          {postgres: 12.0, hll: 2.16},
+          {postgres: 12.0, hll: 2.15.1},
+          
+          {postgres: 12, hll: 2.17},
+          {postgres: 12, hll: 2.16},
+          {postgres: 12, hll: 2.15.1}
+          
+        ]
+       
     runs-on: ubuntu-latest
     steps:
       -
@@ -105,10 +212,10 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            POSTGRES_VERSION=${{ matrix.postgres }}
-            HLL_VERSION=${{ matrix.hll }}
+            POSTGRES_VERSION=${{ matrix.version.postgres }}
+            HLL_VERSION=${{ matrix.version.hll }}
           platforms: linux/amd64
           push: true
-          tags: hbontempo/postgres-hll:${{ matrix.postgres }}-v${{ matrix.hll }}
-          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.postgres }}
+          tags: hbontempo/postgres-hll:${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
+          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.version.postgres }}
           cache-to: type=inline
