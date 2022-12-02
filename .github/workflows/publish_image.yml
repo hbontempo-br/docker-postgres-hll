@@ -1,0 +1,51 @@
+name: publish_image
+
+on:
+  workflow_dispatch:
+    inputs: 
+      postgres_version:
+        description: 'PostgreSQL version'
+        required: true
+        default: 'latest'
+        type: text
+      hll_version:
+        description: 'HLL plugin version'
+        required: true
+        default: '2.17'
+        type: text
+      
+
+jobs:
+  publish:
+    concurrency:
+      group: publish-${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+      cancel-in-progress: true
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: hbontempo
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            POSTGRES_VERSION=${{ inputs.postgres_version }}
+            HLL_VERSION=${{ inputs.hll_version }}
+          platforms: linux/amd64
+          push: true
+          tags: hbontempo/postgres-hll:${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+          cache-to: type=inline

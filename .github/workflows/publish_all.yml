@@ -1,11 +1,9 @@
-name: publish
+name: publish_all
 
 on:
   push:
     branches:
       - main
-  schedule:
-    - cron: '0 10 * * *'
   workflow_dispatch:
 
 
@@ -29,9 +27,6 @@ jobs:
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
   publish:
-    concurrency:
-      group: ${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
-      cancel-in-progress: true
     timeout-minutes: 5
     strategy:
       max-parallel: 4
@@ -194,29 +189,9 @@ jobs:
        
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - 
+        name: Invoke publish_image workflow
+        uses: benc-uk/workflow-dispatch@v1
         with:
-          username: hbontempo
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            POSTGRES_VERSION=${{ matrix.version.postgres }}
-            HLL_VERSION=${{ matrix.version.hll }}
-          platforms: linux/amd64
-          push: true
-          tags: hbontempo/postgres-hll:${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
-          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ matrix.version.postgres }}
-          cache-to: type=inline
+          workflow: publish_image
+          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}" }'
