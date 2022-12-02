@@ -38,4 +38,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish_image
-          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}" }'
+          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}", "tags": "${{ matrix.version.tags }}" }'

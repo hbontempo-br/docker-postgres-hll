@@ -13,6 +13,11 @@ on:
         required: true
         default: '2.17'
         type: text
+      tags:
+        description: 'latest-v2.17'
+        required: true
+        default: 'latest-v2.17'
+        type: text
       
 
 jobs:
@@ -46,6 +51,6 @@ jobs:
             HLL_VERSION=${{ inputs.hll_version }}
           platforms: linux/amd64
           push: true
-          tags: hbontempo/postgres-hll:${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+          tags: ${{ inputs.tags }}
           cache-from: type=registry,ref=hbontempo/postgres-hll:${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
           cache-to: type=inline
