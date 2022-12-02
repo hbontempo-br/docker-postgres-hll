@@ -26,23 +26,17 @@ jobs:
           repository: hbontempo/postgres-hll
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
-  version_matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - 
-        id: set-matrix
-        run: |
-          JSON=$(cat ./versions.json)
-          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+  get_versions_matrix:
+    uses: ./.github/workflows/versions_matrix.yml
 
   publish:
+    needs: get_versions_matrix
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
-      matrix: ${{fromJson(needs.version_matrix.outputs.matrix)}}       
+      matrix: 
+        version: ${{ fromJson(needs.get_versions_matrix.outputs.matrix) }}     
     runs-on: ubuntu-latest
     steps:
       - 
@@ -50,4 +44,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish_image
-          inputs: '{ "postgres_version": "${{ matrix.postgres }}", "hll_version": "${{ matrix.hll }}" }'
+          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}" }'

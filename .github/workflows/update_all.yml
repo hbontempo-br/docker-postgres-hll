@@ -8,44 +8,34 @@ on:
 
 jobs:
 
-  version_matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      - 
-        id: set-matrix
-        run: |
-          JSON=$(cat ./versions.json)
-          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
-
+  get_versions_matrix:
+    uses: ./.github/workflows/versions_matrix.yml
+      
   update:
+    needs: get_versions_matrix
     concurrency:
-      group: update-${{ matrix.postgres }}-v${{ matrix.hll }}
+      group: update-${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
       cancel-in-progress: true
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
-      matrix: ${{fromJson(needs.version_matrix.outputs.matrix)}}
-      
-       
+      matrix: 
+        version: ${{ fromJson(needs.get_versions_matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Docker Image Update Checker
+      - 
+        name: Docker Image Update Checker
         id: base_update_check
-        uses: lucacome/docker-image-update-checker@v1.1.0
+        uses: lucacome/docker-image-update-checker@v1.1.1
         with:
-          base-image: library/postgres:${{ matrix.postgres }}
-          image: hbontempo/postgres-hll:${{ matrix.postgres }}-v${{ matrix.hll }}
-
+          base-image: library/postgres:${{ matrix.version.postgres }}
+          image: hbontempo/postgres-hll:${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
       - 
         name: Invoke publish_image workflow
         if: steps.base_update_check.outputs.needs-updating == 'true'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish_image
-          inputs: '{ "postgres_version": "${{ matrix.postgres }}", "hll_version": "${{ matrix.hll }}" }'
+          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}" }'
