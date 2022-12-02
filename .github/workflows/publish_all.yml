@@ -26,167 +26,23 @@ jobs:
           repository: hbontempo/postgres-hll
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
+  version_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - 
+        id: set-matrix
+        run: |
+          JSON=$(cat ./versions.json)
+          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+
   publish:
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
-      matrix:
-        version: [
-          {postgres: "latest", hll: "2.17"},
-          # {postgres: "latest", hll: "2.16"},
-          # {postgres: "latest", hll: "2.15.1"},
-          
-          {postgres: "15.1", hll: "2.17"},
-          # {postgres: "15.1", hll: "2.16"},
-          # {postgres: "15.1", hll: "2.15.1"},
-          
-          {postgres: "15.0", hll: "2.17"},
-          # {postgres: "15.0", hll: "2.16"},
-          # {postgres: "15.0", hll: "2.15.1"},
-          
-          {postgres: "15", hll: "2.17"},
-          # {postgres: "15", hll: "2.16"},
-          # {postgres: "15", hll: "2.15.1"},
-          
-          {postgres: "14.6", hll: "2.17"},
-          {postgres: "14.6", hll: "2.16"},
-          # {postgres: "14.6", hll: "2.15.1"},
-          
-          {postgres: "14.5", hll: "2.17"},
-          {postgres: "14.5", hll: "2.16"},
-          # {postgres: "14.5", hll: "2.15.1"},
-          
-          {postgres: "14.4", hll: "2.17"},
-          {postgres: "14.4", hll: "2.16"},
-          # {postgres: "14.4", hll: "2.15.1"},
-          
-          {postgres: "14.3", hll: "2.17"},
-          {postgres: "14.3", hll: "2.16"},
-          # {postgres: "14.3", hll: "2.15.1"},
-          
-          {postgres: "14.2", hll: "2.17"},
-          {postgres: "14.2", hll: "2.16"},
-          # {postgres: "14.2", hll: "2.15.1"},
-          
-          {postgres: "14.1", hll: "2.17"},
-          {postgres: "14.1", hll: "2.16"},
-          # {postgres: "14.1", hll: "2.15.1"},
-          
-          {postgres: "14.0", hll: "2.17"},
-          {postgres: "14.0", hll: "2.16"},
-          # {postgres: "14.0", hll: "2.15.1"},
-          
-          {postgres: "14", hll: "2.17"},
-          {postgres: "14", hll: "2.16"},
-          # {postgres: "14", hll: "2.15.1"},
-          
-          {postgres: "13.9", hll: "2.17"},
-          {postgres: "13.9", hll: "2.16"},
-          {postgres: "13.9", hll: "2.15.1"},
-          
-          {postgres: "13.8", hll: "2.17"},
-          {postgres: "13.8", hll: "2.16"},
-          {postgres: "13.8", hll: "2.15.1"},
-          
-          {postgres: "13.7", hll: "2.17"},
-          {postgres: "13.7", hll: "2.16"},
-          {postgres: "13.7", hll: "2.15.1"},
-          
-          {postgres: "13.6", hll: "2.17"},
-          {postgres: "13.6", hll: "2.16"},
-          {postgres: "13.6", hll: "2.15.1"},
-          
-          {postgres: "13.5", hll: "2.17"},
-          {postgres: "13.5", hll: "2.16"},
-          {postgres: "13.5", hll: "2.15.1"},
-          
-          {postgres: "13.4", hll: "2.17"},
-          {postgres: "13.4", hll: "2.16"},
-          {postgres: "13.4", hll: "2.15.1"},
-          
-          {postgres: "13.3", hll: "2.17"},
-          {postgres: "13.3", hll: "2.16"},
-          {postgres: "13.3", hll: "2.15.1"},
-          
-          {postgres: "13.2", hll: "2.17"},
-          {postgres: "13.2", hll: "2.16"},
-          {postgres: "13.2", hll: "2.15.1"},
-          
-          {postgres: "13.1", hll: "2.17"},
-          {postgres: "13.1", hll: "2.16"},
-          {postgres: "13.1", hll: "2.15.1"},
-          
-          {postgres: "13.0", hll: "2.17"},
-          {postgres: "13.0", hll: "2.16"},
-          {postgres: "13.0", hll: "2.15.1"},
-          
-          {postgres: "13", hll: "2.17"},
-          {postgres: "13", hll: "2.16"},
-          {postgres: "13", hll: "2.15.1"},
-          
-          {postgres: "12.13", hll: "2.17"},
-          {postgres: "12.13", hll: "2.16"},
-          {postgres: "12.13", hll: "2.15.1"},
-          
-          {postgres: "12.12", hll: "2.17"},
-          {postgres: "12.12", hll: "2.16"},
-          {postgres: "12.12", hll: "2.15.1"},
-          
-          {postgres: "12.11", hll: "2.17"},
-          {postgres: "12.11", hll: "2.16"},
-          {postgres: "12.11", hll: "2.15.1"},
-          
-          {postgres: "12.10", hll: "2.17"},
-          {postgres: "12.10", hll: "2.16"},
-          {postgres: "12.10", hll: "2.15.1"},
-          
-          {postgres: "12.9", hll: "2.17"},
-          {postgres: "12.9", hll: "2.16"},
-          {postgres: "12.9", hll: "2.15.1"},
-          
-          {postgres: "12.8", hll: "2.17"},
-          {postgres: "12.8", hll: "2.16"},
-          {postgres: "12.8", hll: "2.15.1"},
-          
-          {postgres: "12.7", hll: "2.17"},
-          {postgres: "12.7", hll: "2.16"},
-          {postgres: "12.7", hll: "2.15.1"},
-          
-          {postgres: "12.6", hll: "2.17"},
-          {postgres: "12.6", hll: "2.16"},
-          {postgres: "12.6", hll: "2.15.1"},
-          
-          {postgres: "12.5", hll: "2.17"},
-          {postgres: "12.5", hll: "2.16"},
-          {postgres: "12.5", hll: "2.15.1"},
-          
-          {postgres: "12.4", hll: "2.17"},
-          {postgres: "12.4", hll: "2.16"},
-          {postgres: "12.4", hll: "2.15.1"},
-          
-          {postgres: "12.3", hll: "2.17"},
-          {postgres: "12.3", hll: "2.16"},
-          {postgres: "12.3", hll: "2.15.1"},
-          
-          {postgres: "12.2", hll: "2.17"},
-          {postgres: "12.2", hll: "2.16"},
-          {postgres: "12.2", hll: "2.15.1"},
-          
-          {postgres: "12.1", hll: "2.17"},
-          {postgres: "12.1", hll: "2.16"},
-          {postgres: "12.1", hll: "2.15.1"},
-          
-          {postgres: "12.0", hll: "2.17"},
-          {postgres: "12.0", hll: "2.16"},
-          {postgres: "12.0", hll: "2.15.1"},
-          
-          {postgres: "12", hll: "2.17"},
-          {postgres: "12", hll: "2.16"},
-          {postgres: "12", hll: "2.15.1"}
-          
-        ]
-       
+      matrix: ${{fromJson(needs.version_matrix.outputs.matrix)}}       
     runs-on: ubuntu-latest
     steps:
       - 
@@ -194,4 +50,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish_image
-          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}" }'
+          inputs: '{ "postgres_version": "${{ matrix.postgres }}", "hll_version": "${{ matrix.hll }}" }'
