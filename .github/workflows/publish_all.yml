@@ -34,6 +34,9 @@ jobs:
   publish:
     needs: get_configuration
     timeout-minutes: 5
+    concurrency:
+      group: ${{ matrix.config.main_tag }}
+      cancel-in-progress: true
     strategy:
       max-parallel: 4
       fail-fast: false
@@ -41,9 +44,18 @@ jobs:
         config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}     
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
       - 
-        name: Invoke publish_image workflow
-        uses: benc-uk/workflow-dispatch@v1
+        name: Build and push
+        id: build_push
+        uses: ./.github/actions/publish_image
         with:
-          workflow: publish_image
-          inputs: '{ "postgres": "${{ matrix.config.postgres }}", "hll": "${{ matrix.config.hll }}", "main_tag": "${{ matrix.config.main_tag }}", "tags": "${{ matrix.config.tags }}" }'
+          dockerhub_username: hbontempo
+          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          postgres: ${{ matrix.config.postgres }}
+          hll: ${{ matrix.config.hll }}
+          main_tag: ${{ matrix.config.main_tag }}
+          tags: ${{ matrix.config.tags }}
+     

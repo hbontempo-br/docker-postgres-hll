@@ -14,7 +14,7 @@ jobs:
   update:
     needs: get_configuration
     concurrency:
-      group: update-${{ matrix.config.main_tag }}
+      group: ${{ matrix.config.main_tag }}
       cancel-in-progress: true
     timeout-minutes: 5
     strategy:
@@ -32,10 +32,17 @@ jobs:
         with:
           base-image: library/postgres:${{ matrix.config.postgres }}
           image: ${{ matrix.config.main_tag }}
+      -
+        name: Checkout
+        uses: actions/checkout@v3
       - 
-        name: Invoke publish_image workflow
-        if: steps.base_update_check.outputs.needs-updating == 'true'
-        uses: benc-uk/workflow-dispatch@v1
+        name: Build and push
+        id: build_push
+        uses: ./.github/actions/publish_image
         with:
-          workflow: publish_image
-          inputs: '{ "postgres": "${{ matrix.config.postgres }}", "hll": "${{ matrix.config.hll }}", "main_tag": "${{ matrix.config.main_tag }}", "tags": "${{ matrix.config.tags }}" }'
+          dockerhub_username: hbontempo
+          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          postgres: ${{ matrix.config.postgres }}
+          hll: ${{ matrix.config.hll }}
+          main_tag: ${{ matrix.config.main_tag }}
+          tags: ${{ matrix.config.tags }}
