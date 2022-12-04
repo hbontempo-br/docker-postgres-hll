@@ -8,20 +8,20 @@ on:
 
 jobs:
 
-  get_versions_matrix:
-    uses: ./.github/workflows/versions_matrix.yml
+  get_configuration:
+    uses: ./.github/workflows/configuration.yml
       
   update:
-    needs: get_versions_matrix
+    needs: get_configuration
     concurrency:
-      group: update-${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
+      group: ${{ matrix.config.main_tag }}
       cancel-in-progress: true
     timeout-minutes: 5
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix: 
-        version: ${{ fromJson(needs.get_versions_matrix.outputs.matrix) }}
+        config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}
     runs-on: ubuntu-latest
     
     steps:
@@ -30,12 +30,19 @@ jobs:
         id: base_update_check
         uses: lucacome/docker-image-update-checker@v1.1.1
         with:
-          base-image: library/postgres:${{ matrix.version.postgres }}
-          image: hbontempo/postgres-hll:${{ matrix.version.postgres }}-v${{ matrix.version.hll }}
+          base-image: library/postgres:${{ matrix.config.postgres }}
+          image: ${{ matrix.config.main_tag }}
+      -
+        name: Checkout
+        uses: actions/checkout@v3
       - 
-        name: Invoke publish_image workflow
-        if: steps.base_update_check.outputs.needs-updating == 'true'
-        uses: benc-uk/workflow-dispatch@v1
+        name: Build and push
+        id: build_push
+        uses: ./.github/actions/publish_image
         with:
-          workflow: publish_image
-          inputs: '{ "postgres_version": "${{ matrix.version.postgres }}", "hll_version": "${{ matrix.version.hll }}", "tags": "${{ matrix.version.tags }}" }'
+          dockerhub_username: hbontempo
+          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          postgres: ${{ matrix.config.postgres }}
+          hll: ${{ matrix.config.hll }}
+          main_tag: ${{ matrix.config.main_tag }}
+          tags: ${{ matrix.config.tags }}

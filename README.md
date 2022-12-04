@@ -12,7 +12,7 @@ Collection of PostgreSQL docker images with the [HLL plugin](https://github.com/
 
 ## Tag convention
 
-Pretty simple: `{POSTGRES_VERSION}-v{HLL_VERSION}`, so, for example, if you need a Postgres 13.8 image with HLL version 2.16 should use the `hbontempo/postgres-hll:13.8-v2.16` image.
+Pretty simple: `{POSTGRES_IMAGE_VERSION}-v{HLL_VERSION}`, so, for example, if you need a image based postgres:13.8 with HLL version 2.16 installed you should use the `hbontempo/postgres-hll:13.8-v2.16` image.
 To use the lastest Postgres and HLL version use the `latest` version.
 
 ## How to use this image

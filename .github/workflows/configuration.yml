@@ -1,0 +1,40 @@
+name: configuration
+
+on:
+  workflow_call:
+    # Map the workflow outputs to job outputs
+    outputs:
+      matrix:
+        value: ${{ jobs.generate.outputs.matrix }}
+      image_name: 
+        value: ${{ jobs.generate.outputs.image_name }}
+
+env: 
+  IMAGE_NAME: hbontempo/postgres-hll
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.config-matrix.outputs.matrix }}
+      image_name: ${{ env.IMAGE_NAME }}
+    steps:
+      -
+        name: checkout
+        uses: actions/checkout@v3
+      - 
+        id: config-matrix
+        # Generates configuration matrix like:
+        # [
+        #    {
+        #       "postgres": "latest"
+        #       "hll": "2.17"
+        #       "extra_tags": ["latest", "latest-latest"]
+        #       "image_name": "hbontempo/postgres-hll"
+        #       "version": "latest-v2.17"
+        #       "main_tag": "hbontempo/postgres-hll:latest-v2.17"
+        #       "tags": "hbontempo/postgres-hll:latest-v2.17,hbontempo/postgres-hll:latest,hbontempo/postgres-hll:latest-latest"
+        #    }
+        # ]
+        run: |
+          echo "matrix=$(jq -c '[.[] | . + {image_name: env.IMAGE_NAME,  version: (.postgres + "-v" + .hll)}]' < ./config.json | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
