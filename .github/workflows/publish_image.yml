@@ -3,27 +3,32 @@ name: publish_image
 on:
   workflow_dispatch:
     inputs: 
-      postgres_version:
+      postgres:
         description: 'PostgreSQL version'
         required: true
         default: 'latest'
         type: text
-      hll_version:
+      hll:
         description: 'HLL plugin version'
         required: true
         default: '2.17'
         type: text
-      tags:
-        description: 'latest-v2.17'
+      main_tag:
+        description: 'Maint tag that shouldbe used'
         required: true
-        default: 'latest-v2.17'
+        default: 'hbontempo/postgres-hll:latest-v2.17'
+        type: text
+      tags:
+        description: 'All tags that should be used'
+        required: true
+        default: 'hbontempo/postgres-hll:latest-v2.17,hbontempo/postgres-hll:latest'
         type: text
       
 
 jobs:
   publish:
     concurrency:
-      group: publish-${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+      group: publish-${{ inputs.main_tag }}
       cancel-in-progress: true
     timeout-minutes: 5
     runs-on: ubuntu-latest
@@ -47,10 +52,10 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            POSTGRES_VERSION=${{ inputs.postgres_version }}
-            HLL_VERSION=${{ inputs.hll_version }}
+            POSTGRES_VERSION=${{ inputs.postgres }}
+            HLL_VERSION=${{ inputs.hll }}
           platforms: linux/amd64
           push: true
           tags: ${{ inputs.tags }}
-          cache-from: type=registry,ref=hbontempo/postgres-hll:${{ inputs.postgres_version }}-v${{ inputs.hll_version }}
+          cache-from: type=registry,ref=${{ inputs.main_tag }}
           cache-to: type=inline
