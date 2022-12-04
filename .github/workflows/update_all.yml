@@ -46,5 +46,6 @@ jobs:
           dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           postgres: ${{ matrix.config.postgres }}
           hll: ${{ matrix.config.hll }}
+          dockerfile: ${{ matrix.config.dockerfile }}
           main_tag: ${{ matrix.config.main_tag }}
           tags: ${{ matrix.config.tags }}
