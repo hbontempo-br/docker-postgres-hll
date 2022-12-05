@@ -16,9 +16,6 @@ on:
         default: debian.json
         required: true
         type: string
-    secrets:
-      DOCKER_HUB_ACCESS_TOKEN:
-        required: true
 
 
 jobs:

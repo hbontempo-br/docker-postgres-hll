@@ -13,9 +13,6 @@ on:
         default: debian.json
         required: true
         type: string
-    secrets:
-      DOCKER_HUB_ACCESS_TOKEN:
-        required: true
 
 
 jobs:
@@ -24,6 +21,7 @@ jobs:
     uses: ./.github/workflows/configuration.yml
     with:
       config_file: ${{ inputs.config_file }}
+      image_name: ${{ inputs.image_name }}
       
   update:
     needs: get_configuration

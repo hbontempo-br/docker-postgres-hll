@@ -6,9 +6,6 @@ on:
     - cron: '0 10 * * *' # Daily at 10AM
   workflow_dispatch:
 
-env: 
-  IMAGE_NAME: hbontempo/postgres-hll
-
 jobs:
 
   publish:
@@ -23,6 +20,6 @@ jobs:
           - alpine317.json
     uses: ./.github/workflows/update.yml
     with:
+      image_name: hbontempo/postgres-hll
       config_file: ${{ matrix.config_file }}
-      image_name: $IMAGE_NAME
     secrets: inherit

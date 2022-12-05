@@ -6,9 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env: 
-  IMAGE_NAME: hbontempo/postgres-hll
-
 jobs:
 
   update-description:
@@ -26,7 +23,7 @@ jobs:
         with:
           username: hbontempo
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: ${{ env.IMAGE_NAME }}
+          repository: hbontempo/postgres-hll
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
   publish:
@@ -41,6 +38,6 @@ jobs:
           - alpine317.json
     uses: ./.github/workflows/publish.yml
     with:
+      image_name: hbontempo/postgres-hll
       config_file: ${{ matrix.config_file }}
-      image_name: $IMAGE_NAME
     secrets: inherit
