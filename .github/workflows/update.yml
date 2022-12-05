@@ -1,15 +1,26 @@
-name: update_all
+name: update
 
 on:
-  schedule:
-    - cron: '0 10 * * *' # Daily at 10AM
-  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 10 * * *' # Daily at 10AM
+  workflow_call:
+    inputs:
+      config_file:
+        description: 'Configuration file'
+        default: debian.json
+        required: true
+        type: string
+    secrets:
+      DOCKER_HUB_ACCESS_TOKEN:
+        required: true
 
 
 jobs:
 
   get_configuration:
     uses: ./.github/workflows/configuration.yml
+    with:
+      config_file: ${{ inputs.config_file }}
       
   update:
     needs: get_configuration

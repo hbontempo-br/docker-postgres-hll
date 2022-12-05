@@ -2,6 +2,12 @@ name: configuration
 
 on:
   workflow_call:
+    inputs:
+      config_file:
+        description: 'Configuration file'
+        default: debian.json
+        required: true
+        type: string
     # Map the workflow outputs to job outputs
     outputs:
       matrix:
@@ -37,4 +43,4 @@ jobs:
         #    }
         # ]
         run: |
-          echo "matrix=$(jq -c '[.[] | . + {image_name: env.IMAGE_NAME,  version: (.postgres + "-v" + .hll)}]' < ./config.json | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '[.[] | . + {image_name: env.IMAGE_NAME,  version: (.postgres + "-v" + .hll)}]' < ./config/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
