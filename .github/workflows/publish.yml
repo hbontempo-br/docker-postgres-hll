@@ -1,0 +1,56 @@
+name: publish
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_call:
+    inputs:
+      image_name:
+        description: 'Image name to use'
+        default: hbontempo/postgres-hll
+        required: true
+        type: string
+      config_file:
+        description: 'Configuration file'
+        default: debian.json
+        required: true
+        type: string
+
+
+jobs:
+
+  get_configuration:
+    uses: ./.github/workflows/configuration.yml
+    with:
+      image_name: ${{ inputs.image_name }}
+      config_file: ${{ inputs.config_file }}
+
+  publish:
+    needs: get_configuration
+    timeout-minutes: 5
+    concurrency:
+      group: ${{ matrix.config.main_tag }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix: 
+        config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}     
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Build and push
+        id: build_push
+        uses: ./.github/actions/publish_image
+        with:
+          dockerhub_username: hbontempo
+          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          postgres: ${{ matrix.config.postgres }}
+          hll: ${{ matrix.config.hll }}
+          dockerfile: ${{ matrix.config.dockerfile }}
+          main_tag: ${{ matrix.config.main_tag }}
+          tags: ${{ matrix.config.tags }}
+     

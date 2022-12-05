@@ -2,15 +2,23 @@ name: configuration
 
 on:
   workflow_call:
+    inputs:
+      image_name:
+        description: 'Image name to use'
+        default: hbontempo/postgres-hll
+        required: true
+        type: string
+      config_file:
+        description: 'Configuration file'
+        default: debian.json
+        required: true
+        type: string
     # Map the workflow outputs to job outputs
     outputs:
       matrix:
         value: ${{ jobs.generate.outputs.matrix }}
       image_name: 
         value: ${{ jobs.generate.outputs.image_name }}
-
-env: 
-  IMAGE_NAME: hbontempo/postgres-hll
 
 jobs:
   generate:
@@ -37,4 +45,4 @@ jobs:
         #    }
         # ]
         run: |
-          echo "matrix=$(jq -c '[.[] | . + {image_name: env.IMAGE_NAME,  version: (.postgres + "-v" + .hll)}]' < ./config.json | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '[.[] | . + {image_name: "${{ inputs.image_name }}",  version: (.postgres + "-v" + .hll)}]' < ./config/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT

@@ -1,50 +1,25 @@
 name: update_all
 
 on:
+  push:
   schedule:
     - cron: '0 10 * * *' # Daily at 10AM
   workflow_dispatch:
 
-
 jobs:
 
-  get_configuration:
-    uses: ./.github/workflows/configuration.yml
-      
-  update:
-    needs: get_configuration
-    concurrency:
-      group: ${{ matrix.config.main_tag }}
-      cancel-in-progress: true
-    timeout-minutes: 5
+  publish:
     strategy:
-      max-parallel: 4
       fail-fast: false
       matrix: 
-        config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}
-    runs-on: ubuntu-latest
-    
-    steps:
-      - 
-        name: Docker Image Update Checker
-        id: base_update_check
-        uses: lucacome/docker-image-update-checker@v1.1.1
-        with:
-          base-image: library/postgres:${{ matrix.config.postgres }}
-          image: ${{ matrix.config.main_tag }}
-      -
-        name: Checkout
-        if: steps.base_update_check.outputs.needs-updating == 'true'
-        uses: actions/checkout@v3
-      - 
-        name: Build and push
-        if: steps.base_update_check.outputs.needs-updating == 'true'
-        id: build_push
-        uses: ./.github/actions/publish_image
-        with:
-          dockerhub_username: hbontempo
-          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          postgres: ${{ matrix.config.postgres }}
-          hll: ${{ matrix.config.hll }}
-          main_tag: ${{ matrix.config.main_tag }}
-          tags: ${{ matrix.config.tags }}
+        config_file: 
+          - debian.json
+          - debian-bullseye.json
+          - alpine.json
+          - alpine316.json
+          # - alpine317.json
+    uses: ./.github/workflows/update.yml
+    with:
+      image_name: hbontempo/postgres-hll
+      config_file: ${{ matrix.config_file }}
+    secrets: inherit

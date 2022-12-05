@@ -19,6 +19,11 @@ inputs:
     required: true
     default: '2.17'
     type: text
+  dockerfile:
+    description: 'Dockerfile used on build'
+    required: true
+    default: 'Dockerfile.debian'
+    type: text
   main_tag:
     description: 'Maint tag that shouldbe used'
     required: true
@@ -46,7 +51,7 @@ runs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: ./Dockerfile
+        file: ./${{ inputs.dockerfile }}
         build-args: |
           POSTGRES_VERSION=${{ inputs.postgres }}
           HLL_VERSION=${{ inputs.hll }}

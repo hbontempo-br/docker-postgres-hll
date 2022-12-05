@@ -1,0 +1,62 @@
+name: update
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        description: 'Image name to use'
+        default: hbontempo/postgres-hll
+        required: true
+        type: string
+      config_file:
+        description: 'Configuration file'
+        default: debian.json
+        required: true
+        type: string
+
+
+jobs:
+
+  get_configuration:
+    uses: ./.github/workflows/configuration.yml
+    with:
+      config_file: ${{ inputs.config_file }}
+      image_name: ${{ inputs.image_name }}
+      
+  update:
+    needs: get_configuration
+    concurrency:
+      group: ${{ matrix.config.main_tag }}
+      cancel-in-progress: true
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix: 
+        config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - 
+        name: Docker Image Update Checker
+        id: base_update_check
+        uses: lucacome/docker-image-update-checker@v1.1.1
+        with:
+          base-image: library/postgres:${{ matrix.config.postgres }}
+          image: ${{ matrix.config.main_tag }}
+      -
+        name: Checkout
+        if: steps.base_update_check.outputs.needs-updating == 'true'
+        uses: actions/checkout@v3
+      - 
+        name: Build and push
+        if: steps.base_update_check.outputs.needs-updating == 'true'
+        id: build_push
+        uses: ./.github/actions/publish_image
+        with:
+          dockerhub_username: hbontempo
+          dockerhub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          postgres: ${{ matrix.config.postgres }}
+          hll: ${{ matrix.config.hll }}
+          dockerfile: ${{ matrix.config.dockerfile }}
+          main_tag: ${{ matrix.config.main_tag }}
+          tags: ${{ matrix.config.tags }}
