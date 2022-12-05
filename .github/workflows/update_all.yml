@@ -17,7 +17,7 @@ jobs:
           - debian-bullseye.json
           - alpine.json
           - alpine316.json
-          - alpine317.json
+          # - alpine317.json
     uses: ./.github/workflows/update.yml
     with:
       image_name: hbontempo/postgres-hll
