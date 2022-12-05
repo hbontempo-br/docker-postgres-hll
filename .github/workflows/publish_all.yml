@@ -12,7 +12,6 @@ env:
 jobs:
 
   update-description:
-    needs: get_configuration
     concurrency:
         group: update-description
         cancel-in-progress: true
