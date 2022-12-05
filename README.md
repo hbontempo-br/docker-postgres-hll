@@ -2,9 +2,9 @@
 
 Collection of PostgreSQL docker images with the [HLL plugin](https://github.com/citusdata/postgresql-hll) already installed.
 
-:warning: This images meant for development use :warning:
+:warning: This images is meant for development use :warning:
 
-> **_Images repository_**: https://hub.docker.com/repository/docker/hbontempo/postgres-hll
+> **_Images repository_**: https://hub.docker.com/r/hbontempo/postgres-hll
 
 > **_Source code:_** https://github.com/hbontempo/docker-postgres-hll
 
