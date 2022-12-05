@@ -1,10 +1,13 @@
 name: update
 
 on:
-  # schedule:
-  #   - cron: '0 10 * * *' # Daily at 10AM
   workflow_call:
     inputs:
+      image_name:
+        description: 'Image name to use'
+        default: hbontempo/postgres-hll
+        required: true
+        type: string
       config_file:
         description: 'Configuration file'
         default: debian.json

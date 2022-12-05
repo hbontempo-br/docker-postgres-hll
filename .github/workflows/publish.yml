@@ -6,6 +6,11 @@ on:
   #     - main
   workflow_call:
     inputs:
+      image_name:
+        description: 'Image name to use'
+        default: hbontempo/postgres-hll
+        required: true
+        type: string
       config_file:
         description: 'Configuration file'
         default: debian.json
@@ -21,26 +26,8 @@ jobs:
   get_configuration:
     uses: ./.github/workflows/configuration.yml
     with:
+      image_name: ${{ inputs.image_name }}
       config_file: ${{ inputs.config_file }}
-
-  update-description:
-    needs: get_configuration
-    concurrency:
-        group: update-description
-        cancel-in-progress: true
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      - 
-        name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: hbontempo
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          repository: ${{ needs.get_configuration.outputs.image_name }}
-          short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
   publish:
     needs: get_configuration

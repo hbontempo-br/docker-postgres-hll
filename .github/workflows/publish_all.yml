@@ -6,7 +6,29 @@ on:
       - main
   workflow_dispatch:
 
+env: 
+  IMAGE_NAME: hbontempo/postgres-hll
+
 jobs:
+
+  update-description:
+    needs: get_configuration
+    concurrency:
+        group: update-description
+        cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: hbontempo
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          repository: ${{ env.IMAGE_NAME }}
+          short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
   publish:
     strategy:
@@ -21,4 +43,5 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       config_file: ${{ matrix.config_file }}
+      image_name: $IMAGE_NAME
     secrets: inherit

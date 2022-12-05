@@ -1,0 +1,28 @@
+name: update_all
+
+on:
+  push:
+  schedule:
+    - cron: '0 10 * * *' # Daily at 10AM
+  workflow_dispatch:
+
+env: 
+  IMAGE_NAME: hbontempo/postgres-hll
+
+jobs:
+
+  publish:
+    strategy:
+      fail-fast: false
+      matrix: 
+        config_file: 
+          - debian.json
+          - debian-bullseye.json
+          - alpine.json
+          - alpine316.json
+          - alpine317.json
+    uses: ./.github/workflows/update.yml
+    with:
+      config_file: ${{ matrix.config_file }}
+      image_name: $IMAGE_NAME
+    secrets: inherit
