@@ -1,7 +1,6 @@
 name: update_all
 
 on:
-  push:
   schedule:
     - cron: '0 10 * * *' # Daily at 10AM
   workflow_dispatch:
