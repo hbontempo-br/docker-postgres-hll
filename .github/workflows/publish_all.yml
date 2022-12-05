@@ -38,7 +38,6 @@ jobs:
       group: ${{ matrix.config.main_tag }}
       cancel-in-progress: true
     strategy:
-      max-parallel: 4
       fail-fast: false
       matrix: 
         config: ${{ fromJson(needs.get_configuration.outputs.matrix) }}     
