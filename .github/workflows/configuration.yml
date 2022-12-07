@@ -46,4 +46,4 @@ jobs:
         #    }
         # ]
         run: |
-          echo "matrix=$(jq -c '[.[] | . + {dockerfile: ("dockerfiles/" + .dockerfile), image_name: "${{ inputs.image_name }}",  version: (.postgres + "-v" + .hll)}]' < ./configs/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '[.[] | . + {platforms: (.platforms | join(",")), dockerfile: ("dockerfiles/" + .dockerfile), image_name: "${{ inputs.image_name }}",  version: (.postgres + "-v" + .hll)}]' < ./configs/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT

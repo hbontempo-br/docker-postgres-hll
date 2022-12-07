@@ -28,7 +28,7 @@ jobs:
 
   publish:
     needs: get_configuration
-    timeout-minutes: 5
+    timeout-minutes: 20
     concurrency:
       group: ${{ matrix.config.main_tag }}
       cancel-in-progress: true
@@ -53,4 +53,5 @@ jobs:
           dockerfile: ${{ matrix.config.dockerfile }}
           main_tag: ${{ matrix.config.main_tag }}
           tags: ${{ matrix.config.tags }}
+          platforms: ${{ matrix.config.platforms }}
      

@@ -32,6 +32,10 @@ inputs:
     description: 'All tags that should be used'
     required: true
     type: text
+  platforms:
+    description: 'All platforms that the image should be built'
+    required: true
+    type: text
   
 
 runs:
@@ -47,6 +51,9 @@ runs:
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     -
+      name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    -
       name: Build and push
       uses: docker/build-push-action@v3
       with:
@@ -55,7 +62,7 @@ runs:
         build-args: |
           POSTGRES_VERSION=${{ inputs.postgres }}
           HLL_VERSION=${{ inputs.hll }}
-        platforms: linux/amd64
+        platforms: ${{ inputs.platforms }}
         push: true
         tags: ${{ inputs.tags }}
         cache-from: type=registry,ref=${{ inputs.main_tag }}
