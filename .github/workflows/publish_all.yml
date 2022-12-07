@@ -26,16 +26,15 @@ jobs:
           repository: hbontempo/postgres-hll
           short-description: "Development PostgreSQL images with the HyperLogLog extension"
 
+  get_configuration_files:
+    uses: ./.github/workflows/configuration_files.yml
+
   publish:
+    needs: get_configuration_files
     strategy:
       fail-fast: false
       matrix: 
-        config_file: 
-          - debian.json
-          - debian-bullseye.json
-          - alpine.json
-          - alpine316.json
-          # - alpine317.json
+        config_file: ${{ fromJson(needs.get_configuration_files.outputs.matrix) }}
     uses: ./.github/workflows/publish.yml
     with:
       image_name: hbontempo/postgres-hll
