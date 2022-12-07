@@ -39,10 +39,11 @@ jobs:
         #       "hll": "2.17"
         #       "extra_tags": ["latest", "latest-latest"]
         #       "image_name": "hbontempo/postgres-hll"
+        #       "dockerfile": "dockerfiles/debian.Dockerfile"
         #       "version": "latest-v2.17"
         #       "main_tag": "hbontempo/postgres-hll:latest-v2.17"
         #       "tags": "hbontempo/postgres-hll:latest-v2.17,hbontempo/postgres-hll:latest,hbontempo/postgres-hll:latest-latest"
         #    }
         # ]
         run: |
-          echo "matrix=$(jq -c '[.[] | . + {image_name: "${{ inputs.image_name }}",  version: (.postgres + "-v" + .hll)}]' < ./config/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '[.[] | . + {dockerfile: ("dockerfiles/" + .dockerfile), image_name: "${{ inputs.image_name }}",  version: (.postgres + "-v" + .hll)}]' < ./configs/${{ inputs.config_file }} | jq -c '[.[] | . + {main_tag: (.image_name + ":" + .version), tags: (([.image_name + ":" + .extra_tags[]]) | join(","))}]' | jq -c '[.[] | . + {tags: (.main_tag + "," + .tags)}]')" >> $GITHUB_OUTPUT
