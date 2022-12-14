@@ -6,7 +6,7 @@ Collection of PostgreSQL docker images with the [HLL plugin](https://github.com/
 
 > **_Images repository_**: https://hub.docker.com/r/hbontempo/postgres-hll
 
-> **_Source code:_** https://github.com/hbontempo/docker-postgres-hll
+> **_Source code:_** https://github.com/hbontempo-br/docker-postgres-hll
 
 
 
