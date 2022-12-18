@@ -4,7 +4,7 @@ FROM postgres:$POSTGRES_VERSION
 
 ENV POSTGRES_PASSWORD postgres
 
-RUN apk --update add --no-cache wget make gcc g++ wget postgresql-dev
+RUN apk --update add --no-cache wget build-base clang llvm postgresql-dev
 
 WORKDIR /src
 
