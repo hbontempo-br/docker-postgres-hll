@@ -24,7 +24,7 @@ Here is the basic configuration:
 ### Directly using the `docker` CLI
 
 ```shell
-$ docker run --name your_name -e POSTGRES_PASSWORD=mysecretpassword -d hbontempo/postgres-hll
+$ docker run --name your_name -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d hbontempo/postgres-hll
 ```
 
 ### Using `docker-compose` or `docker stack deploy`
@@ -42,6 +42,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - 5432:5432
 
 ```
 
