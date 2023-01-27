@@ -10,7 +10,7 @@ jobs:
   get_configuration_files:
     uses: ./.github/workflows/configuration_files.yml
 
-  publish:
+  update:
     needs: get_configuration_files
     strategy:
       fail-fast: false
