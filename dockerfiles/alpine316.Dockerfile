@@ -4,7 +4,7 @@ FROM postgres:$POSTGRES_VERSION
 
 ENV POSTGRES_PASSWORD postgres
 
-RUN apk --update add --no-cache wget build-base llvm postgresql-dev
+RUN apk --update add --no-cache wget build-base clang llvm postgresql-dev
 
 WORKDIR /src
 
@@ -14,7 +14,7 @@ RUN wget https://github.com/citusdata/postgresql-hll/archive/refs/tags/v${HLL_VE
     mkdir ${SRC} && \
     tar xf ./${SRC}.tar.gz -C ${SRC} --strip-components 1
 WORKDIR /src/${SRC}
-RUN PG_CONFIG=/usr/bin/pg_config make
-RUN PG_CONFIG=/usr/bin/pg_config make install
+RUN make
+RUN make install
 RUN echo "shared_preload_libraries = 'hll'" >> /usr/local/share/postgresql/postgresql.conf.sample
 COPY hll_extension.sql /docker-entrypoint-initdb.d/
