@@ -38,7 +38,7 @@ version: '3.1'
 services:
 
   db:
-    image: postgres
+    image: hbontempo/postgres-hll
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
