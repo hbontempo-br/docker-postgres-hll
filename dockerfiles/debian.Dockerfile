@@ -12,8 +12,7 @@ RUN wget https://github.com/citusdata/postgresql-hll/archive/refs/tags/v${HLL_VE
     mkdir postgresql-hll && \
     tar xf ./postgresql-hll.tar.gz -C postgresql-hll --strip-components 1
 WORKDIR /src/postgresql-hll
-RUN PG_CONFIG=/usr/bin/pg_config make
-RUN PG_CONFIG=/usr/bin/pg_config make install
+RUN make &&  make install
 
 FROM postgres:$POSTGRES_VERSION 
 
