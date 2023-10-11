@@ -1,8 +1,8 @@
 name: update_all
 
 on:
-  schedule:
-    - cron: '0 10 * * *' # Daily at 10AM
+  # schedule:
+  #   - cron: '0 10 * * *' # Daily at 10AM
   workflow_dispatch:
 
 jobs:
