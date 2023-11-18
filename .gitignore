@@ -1,2 +1,5 @@
 # Used on GitHub Actions development pevelopment
 .secrets
+
+# Other
+.idea
