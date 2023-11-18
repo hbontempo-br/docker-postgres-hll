@@ -15,6 +15,8 @@
   { "postgres": "15.1-alpine3.17",  "hll": "2.17", "dockerfile": "alpine.Dockerfile", "extra_tags": [],                          "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "15-alpine3.17",    "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["15-alpine3.17-latest"],    "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "15-alpine3.17",    "hll": "2.17", "dockerfile": "alpine.Dockerfile", "extra_tags": [],                          "platforms": ["linux/amd64", "linux/arm64"] },
+  { "postgres": "14.10-alpine3.17", "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["14.10-alpine3.17-latest"], "platforms": ["linux/amd64", "linux/arm64"] },
+  { "postgres": "14.10-alpine3.17", "hll": "2.17", "dockerfile": "alpine.Dockerfile", "extra_tags": [],                          "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "14.9-alpine3.17",  "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["14.9-alpine3.17-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "14.9-alpine3.17",  "hll": "2.17", "dockerfile": "alpine.Dockerfile", "extra_tags": [],                          "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "14.8-alpine3.17",  "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["14.8-alpine3.17-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
