@@ -1,5 +1,6 @@
 [
   { "postgres": "alpine",       "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["alpine-latest"],       "platforms": ["linux/amd64", "linux/arm64"] },
+  { "postgres": "16.1-alpine",  "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["16.1-alpine-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "16.0-alpine",  "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["16.0-alpine-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "16-alpine",    "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["16-alpine-latest"],    "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "15.4-alpine",  "hll": "2.18", "dockerfile": "alpine.Dockerfile", "extra_tags": ["15.4-alpine-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },

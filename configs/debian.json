@@ -1,5 +1,6 @@
 [
   { "postgres": "latest", "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["latest", "latest-latest"], "platforms": ["linux/amd64", "linux/arm64"]  },
+  { "postgres": "16.1",   "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16.1-latest"],             "platforms": ["linux/amd64", "linux/arm64"]  },
   { "postgres": "16.0",   "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16.0-latest"],             "platforms": ["linux/amd64", "linux/arm64"]  },
   { "postgres": "16",     "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16-latest"],               "platforms": ["linux/amd64", "linux/arm64"]  },
   { "postgres": "15.4",   "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["15.4-latest"],             "platforms": ["linux/amd64", "linux/arm64"]  },
