@@ -1,5 +1,5 @@
 [
-  { "postgres": "bullseye",       "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["bullseye"],              "platforms": ["linux/amd64", "linux/arm64"] },
+  { "postgres": "bullseye",       "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["bullseye-latest"],       "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "16.1-bullseye",  "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16.1-bullseye-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "16.0-bullseye",  "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16.0-bullseye-latest"],  "platforms": ["linux/amd64", "linux/arm64"] },
   { "postgres": "16-bullseye",    "hll": "2.18",   "dockerfile": "debian.Dockerfile", "extra_tags": ["16-bullseye-latest"],    "platforms": ["linux/amd64", "linux/arm64"] },
