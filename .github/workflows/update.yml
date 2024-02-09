@@ -39,7 +39,7 @@ jobs:
       - 
         name: Docker Image Update Checker
         id: base_update_check
-        uses: lucacome/docker-image-update-checker@v1.2.0
+        uses: lucacome/docker-image-update-checker@v1
         with:
           base-image: library/postgres:${{ matrix.config.postgres }}
           image: ${{ matrix.config.main_tag }}
@@ -47,7 +47,7 @@ jobs:
       -
         name: Checkout
         if: steps.base_update_check.outputs.needs-updating == 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - 
         name: Build and push
         if: steps.base_update_check.outputs.needs-updating == 'true'
