@@ -3,7 +3,7 @@ ARG POSTGRES_VERSION
 FROM postgres:$POSTGRES_VERSION AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -y && apt-get install -y postgresql-server-dev-${PG_MAJOR} make gcc g++ wget
+RUN apt-get update -y && apt-get install -y postgresql-server-dev-${PG_MAJOR} make gcc g++ wget clang
 
 WORKDIR /src
 
@@ -12,7 +12,7 @@ RUN wget https://github.com/citusdata/postgresql-hll/archive/refs/tags/v${HLL_VE
     mkdir postgresql-hll && \
     tar xf ./postgresql-hll.tar.gz -C postgresql-hll --strip-components 1
 WORKDIR /src/postgresql-hll
-RUN make &&  make install
+RUN make && make install
 
 FROM postgres:$POSTGRES_VERSION 
 
