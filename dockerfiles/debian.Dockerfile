@@ -1,4 +1,6 @@
-ARG POSTGRES_VERSION
+# check=skip=SecretsUsedInArgOrEnv
+
+ARG POSTGRES_VERSION=latest
 
 FROM postgres:$POSTGRES_VERSION AS builder
 
@@ -16,7 +18,7 @@ RUN make && make install
 
 FROM postgres:$POSTGRES_VERSION 
 
-ENV POSTGRES_PASSWORD postgres
+ENV POSTGRES_PASSWORD=postgres
 
 RUN echo "shared_preload_libraries = 'hll'" >> /usr/share/postgresql/postgresql.conf.sample
 COPY hll_extension.sql /docker-entrypoint-initdb.d/
