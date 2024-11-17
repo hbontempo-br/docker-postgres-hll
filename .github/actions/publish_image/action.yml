@@ -50,6 +50,10 @@ runs:
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
+      with:
+        buildkitd-config-inline: |
+          [registry."docker.io"]
+            mirrors = ["mirror.gcr.io"]
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v3
